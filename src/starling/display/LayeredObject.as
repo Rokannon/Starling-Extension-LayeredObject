@@ -32,7 +32,7 @@ package starling.display {
 		}
 		
 		/**
-		 * Add DisplayObject and links it to layer. 
+		 * Add DisplayObject and link it to layer. 
 		 */
 		public function addChildToLayer(displayObject:DisplayObject, layerName:String):void {
 			
@@ -46,6 +46,9 @@ package starling.display {
 				listObject.layerName = layerName;
 				listObject.layeredObject = this;
 				_listObjects.push(listObject);
+				if (_container != null) {
+					_container.addListObject(listObject);
+				}
 			}
 			
 			listObject.list.push(displayObject);
@@ -94,6 +97,9 @@ package starling.display {
 					index = _listObjects.indexOf(listObject);
 					_listObjects[index] = _listObjects[length];
 					_listObjects.length = length;
+					if (_container != null) {
+						_container.removeListObject(listObject);
+					}
 				}
 			}
 			
@@ -142,19 +148,21 @@ package starling.display {
 			var length:int = list.length;
 			for (var i:int = 0; i < length; ++i) {
 				var displayObject:DisplayObject = list[i];
-				var filter:FragmentFilter = displayObject.filter;
-				support.pushMatrix();
-				support.transformMatrix(displayObject);
-				support.blendMode = displayObject.blendMode;
-				
-				if (filter != null) {
-					filter.render(displayObject, support, alpha);
-				} else {
-					displayObject.render(support, alpha);
+				if (displayObject.hasVisibleArea) {
+					var filter:FragmentFilter = displayObject.filter;
+					support.pushMatrix();
+					support.transformMatrix(displayObject);
+					support.blendMode = displayObject.blendMode;
+					
+					if (filter != null) {
+						filter.render(displayObject, support, alpha);
+					} else {
+						displayObject.render(support, alpha);
+					}
+					
+					support.blendMode = blendMode;
+					support.popMatrix();
 				}
-				
-				support.blendMode = blendMode;
-				support.popMatrix();
 			}
 			
 		}
