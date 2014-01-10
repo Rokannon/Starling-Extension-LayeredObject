@@ -45,5 +45,5 @@ Methods 'createLayer' and 'addChildToLayer' require memory allocation to hold in
 #### Notes
 
 - LayeredObject extends DisplayObjectContainer class. Adding it to regular DisplayObjectContainer will result displaying all it's children in order respecting standard children indices.
-- LayeredContainer displays only those DisplayObjects that are linked to some layer within some LayeredObject. So calling addChild with non-LayeredObject argument is useless.
+- LayeredContainer displays only those DisplayObjects that are linked to existing layer within some LayeredObject. So calling addChild with non-LayeredObject argument is useless.
 - Calling 'dispose' method from either LayeredObject or LayeredContainer classes with result releasing all their internal data objects back to pool.
