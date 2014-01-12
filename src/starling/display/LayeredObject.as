@@ -123,18 +123,16 @@ package starling.display {
 		
 		internal override function setParent(value:DisplayObjectContainer):void {
 			
-			if (value is LayeredContainer) {
-				var container:LayeredContainer = LayeredContainer(value);
-				for each (var listObject:ListObject in _listObjects) {
-					if (_container != null) {
-						_container.removeListObject(listObject);
-					}
-					if (container != null) {
-						container.addListObject(listObject);
-					}
+			var container:LayeredContainer = value as LayeredContainer;
+			for each (var listObject:ListObject in _listObjects) {
+				if (_container != null) {
+					_container.removeListObject(listObject);
 				}
-				_container = container;
+				if (container != null) {
+					container.addListObject(listObject);
+				}
 			}
+			_container = container;
 			
 			super.setParent(value);
 			
