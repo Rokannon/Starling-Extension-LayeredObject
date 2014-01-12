@@ -90,6 +90,9 @@ package starling.display {
 				
 				// Return to pool if necessary.
 				if (list.length == 0) {
+					if (_container != null) {
+						_container.removeListObject(listObject);
+					}
 					listObject.layerName = null;
 					listObject.layeredObject = null;
 					LIST_OBJECT_POOL.push(listObject);
@@ -97,9 +100,6 @@ package starling.display {
 					index = _listObjects.indexOf(listObject);
 					_listObjects[index] = _listObjects[length];
 					_listObjects.length = length;
-					if (_container != null) {
-						_container.removeListObject(listObject);
-					}
 				}
 			}
 			
