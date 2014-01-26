@@ -16,18 +16,14 @@ package starling.display {
 		
 		private static const LIST_OBJECT_POOL:Vector.<ListObject> = new Vector.<ListObject>();
 		
-		private var _listObjects:Vector.<ListObject>;
-		private var _listObjectByName:Dictionary;
-		private var _listObjectByDisplayObject:Dictionary;
-		private var _layeredDisplayObjects:Vector.<DisplayObject>;
+		private const _listObjects:Vector.<ListObject> = new Vector.<ListObject>();
+		private const _listObjectByName:Dictionary = new Dictionary();
+		private const _listObjectByDisplayObject:Dictionary = new Dictionary();
+		private const _layeredDisplayObjects:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+		
 		private var _container:LayeredContainer;
 		
 		public function LayeredObject() {
-			
-			_listObjects = new Vector.<ListObject>();
-			_listObjectByName = new Dictionary();
-			_listObjectByDisplayObject = new Dictionary();
-			_layeredDisplayObjects = new Vector.<DisplayObject>();
 			
 		}
 		
@@ -63,7 +59,6 @@ package starling.display {
 			var displayObject:DisplayObject = super.removeChildAt(index, dispose);
 			
 			var length:int;
-			var index:int;
 			var i:int;
 			
 			var listObject:ListObject = _listObjectByDisplayObject[displayObject];

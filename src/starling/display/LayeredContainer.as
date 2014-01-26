@@ -16,13 +16,10 @@ package starling.display {
 		
 		private static const LIST_OBJECTS_POOL:Vector.<Vector.<ListObject>> = new Vector.<Vector.<ListObject>>();
 		
-		private var _layers:Vector.<String>;
-		private var _listObjectsByName:Dictionary;
+		private const _layers:Vector.<String> = new Vector.<String>();
+		private const _listObjectsByName:Dictionary = new Dictionary();
 		
 		public function LayeredContainer() {
-			
-			_layers = new Vector.<String>();
-			_listObjectsByName = new Dictionary();
 			
 		}
 		

@@ -8,13 +8,12 @@ package starling.display {
 	 */
 	internal class ListObject {
 		
+		public const list:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+		
 		public var layerName:String;
-		public var list:Vector.<DisplayObject>;
 		public var layeredObject:LayeredObject;
 		
 		public function ListObject() {
-			
-			list = new Vector.<DisplayObject>();
 			
 		}
 		
