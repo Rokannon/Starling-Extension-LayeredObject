@@ -32,24 +32,26 @@ package starling.display {
 		 */
 		public function addChildToLayer(displayObject:DisplayObject, layerName:String):void {
 			
-			var listObject:ListObject = _listObjectByName[layerName];
-			if (listObject == null) {
-				if (LIST_OBJECT_POOL.length == 0) {
-					listObject = new ListObject();
-				} else {
-					listObject = LIST_OBJECT_POOL.pop();
+			if (displayObject.parent != this) {
+				var listObject:ListObject = _listObjectByName[layerName];
+				if (listObject == null) {
+					if (LIST_OBJECT_POOL.length == 0) {
+						listObject = new ListObject();
+					} else {
+						listObject = LIST_OBJECT_POOL.pop();
+					}
+					listObject.layerName = layerName;
+					listObject.layeredObject = this;
+					_listObjects.push(listObject);
+					if (_container != null) {
+						_container.addListObject(listObject);
+					}
 				}
-				listObject.layerName = layerName;
-				listObject.layeredObject = this;
-				_listObjects.push(listObject);
-				if (_container != null) {
-					_container.addListObject(listObject);
-				}
+				
+				listObject.list.push(displayObject);
+				_listObjectByDisplayObject[displayObject] = listObject;
+				_layeredDisplayObjects.push(displayObject);
 			}
-			
-			listObject.list.push(displayObject);
-			_listObjectByDisplayObject[displayObject] = listObject;
-			_layeredDisplayObjects.push(displayObject);
 			addChild(displayObject);
 			
 		}
