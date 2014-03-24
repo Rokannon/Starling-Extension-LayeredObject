@@ -2,9 +2,6 @@ package starling.display {
 	
 	import flash.utils.Dictionary;
 	
-	import starling.core.RenderSupport;
-	import starling.filters.FragmentFilter;
-	
 	/**
 	 * Object that holds together several DisplayObjects on 
 	 * different layers. Order of display depends on parent 
@@ -24,6 +21,8 @@ package starling.display {
 		private var _container:LayeredContainer;
 		
 		public function LayeredObject() {
+			
+			super();
 			
 		}
 		
@@ -135,30 +134,9 @@ package starling.display {
 			
 		}
 		
-		internal function renderList(list:Vector.<DisplayObject>, support:RenderSupport, parentAlpha:Number):void {
+		internal function getListObject(layerName:String):ListObject {
 			
-			var alpha:Number = parentAlpha * this.alpha;
-			var blendMode:String = support.blendMode;
-			
-			var length:int = list.length;
-			for (var i:int = 0; i < length; ++i) {
-				var displayObject:DisplayObject = list[i];
-				if (displayObject.hasVisibleArea) {
-					var filter:FragmentFilter = displayObject.filter;
-					support.pushMatrix();
-					support.transformMatrix(displayObject);
-					support.blendMode = displayObject.blendMode;
-					
-					if (filter != null) {
-						filter.render(displayObject, support, alpha);
-					} else {
-						displayObject.render(support, alpha);
-					}
-					
-					support.blendMode = blendMode;
-					support.popMatrix();
-				}
-			}
+			return _listObjectByName[layerName];
 			
 		}
 		

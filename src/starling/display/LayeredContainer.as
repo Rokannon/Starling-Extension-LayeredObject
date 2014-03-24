@@ -21,6 +21,8 @@ package starling.display {
 		
 		public function LayeredContainer() {
 			
+			super();
+			
 		}
 		
 		/**
@@ -31,7 +33,17 @@ package starling.display {
 		public function createLayer(layerName:String):void {
 			
 			var index:int = _layers.indexOf(layerName);
-			if (index == -1) _layers.push(layerName);
+			if (index == -1) {
+				_layers.push(layerName);
+				var numChildren:int = this.numChildren;
+				for (var i:int = 0; i < numChildren; ++i) {
+					var layeredObject:LayeredObject = getChildAt(i) as LayeredObject;
+					if (layeredObject != null) {
+						var listObject:ListObject = layeredObject.getListObject(layerName);
+						if (listObject != null) addListObject(listObject);
+					}
+				}
+			}
 			
 		}
 		
@@ -43,12 +55,28 @@ package starling.display {
 			
 			var index:int = _layers.indexOf(layerName);
 			if (index != -1) {
+				var listObjects:Vector.<ListObject> = _listObjectsByName[layerName];
+				if (listObjects != null) {
+					listObjects.length = 0;
+					LIST_OBJECTS_POOL.push(listObjects);
+					delete _listObjectsByName[layerName];
+				}
+				
 				var length:int = _layers.length;
 				for (var i:int = index + 1; i < length; ++i) {
 					_layers[i - 1] = _layers[i];
 				}
 				--_layers.length;
 			}
+			
+		}
+		
+		/**
+		 * Checks if container has layer with specified name.
+		 */
+		public function hasLayer(layerName:String):Boolean {
+			
+			return _layers.indexOf(layerName) != -1;
 			
 		}
 		
@@ -74,9 +102,9 @@ package starling.display {
 						support.blendMode = layeredObject.blendMode;
 						
 						if (filter != null) {
-							filter.render(layeredObject, support, alpha);
+							filter.render(listObject, support, alpha);
 						} else {
-							layeredObject.renderList(listObject.list, support, alpha);
+							listObject.render(support, alpha);
 						}
 						
 						support.blendMode = blendMode;
