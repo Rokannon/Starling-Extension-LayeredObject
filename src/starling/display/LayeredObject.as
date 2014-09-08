@@ -59,7 +59,7 @@ package starling.display
             addChild(displayObject);
         }
 
-        public override function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
+        override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
         {
             var displayObject:DisplayObject = super.removeChildAt(index, dispose);
 
@@ -111,7 +111,7 @@ package starling.display
             return displayObject;
         }
 
-        public override function dispose():void
+        override public function dispose():void
         {
             super.dispose();
 
@@ -125,7 +125,7 @@ package starling.display
             }
         }
 
-        internal override function setParent(value:DisplayObjectContainer):void
+        override internal function setParent(value:DisplayObjectContainer):void
         {
             var container:LayeredContainer = value as LayeredContainer;
             for each (var listObject:ListObject in _listObjects)

@@ -85,7 +85,7 @@ package starling.display
             return _layers.indexOf(layerName) != -1;
         }
 
-        public override function render(support:RenderSupport, parentAlpha:Number):void
+        override public function render(support:RenderSupport, parentAlpha:Number):void
         {
             var alpha:Number = parentAlpha * this.alpha;
             var blendMode:String = support.blendMode;
@@ -128,7 +128,7 @@ package starling.display
             }
         }
 
-        public override function dispose():void
+        override public function dispose():void
         {
             super.dispose();
 

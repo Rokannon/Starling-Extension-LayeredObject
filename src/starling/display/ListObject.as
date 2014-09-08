@@ -23,7 +23,7 @@ package starling.display
             super();
         }
 
-        public override function render(support:RenderSupport, parentAlpha:Number):void
+        override public function render(support:RenderSupport, parentAlpha:Number):void
         {
             var alpha:Number = parentAlpha * layeredObject.alpha;
             var blendMode:String = support.blendMode;
