@@ -40,13 +40,9 @@ package starling.display
                     support.blendMode = displayObject.blendMode;
 
                     if (filter != null)
-                    {
                         filter.render(displayObject, support, alpha);
-                    }
                     else
-                    {
                         displayObject.render(support, alpha);
-                    }
 
                     support.blendMode = blendMode;
                     support.popMatrix();

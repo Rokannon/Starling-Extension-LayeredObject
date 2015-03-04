@@ -43,9 +43,7 @@ package starling.display
                     {
                         var listObject:ListObject = layeredObject.getListObject(layerName);
                         if (listObject != null)
-                        {
                             addListObject(listObject);
-                        }
                     }
                 }
             }
@@ -70,9 +68,7 @@ package starling.display
 
                 var length:int = _layers.length;
                 for (var i:int = index + 1; i < length; ++i)
-                {
                     _layers[i - 1] = _layers[i];
-                }
                 --_layers.length;
             }
         }
@@ -96,9 +92,7 @@ package starling.display
                 var layerName:String = _layers[i];
                 var listObjects:Vector.<ListObject> = _listObjectsByName[layerName];
                 if (listObjects == null)
-                {
                     continue;
-                }
 
                 var numListObjects:int = listObjects.length;
                 for (var j:int = 0; j < numListObjects; ++j)
@@ -113,13 +107,9 @@ package starling.display
                         support.blendMode = layeredObject.blendMode;
 
                         if (filter != null)
-                        {
                             filter.render(listObject, support, alpha);
-                        }
                         else
-                        {
                             listObject.render(support, alpha);
-                        }
 
                         support.blendMode = blendMode;
                         support.popMatrix();
@@ -146,13 +136,9 @@ package starling.display
             if (listObjects == null)
             {
                 if (LIST_OBJECTS_POOL.length == 0)
-                {
                     listObjects = new Vector.<ListObject>();
-                }
                 else
-                {
                     listObjects = LIST_OBJECTS_POOL.pop();
-                }
                 _listObjectsByName[listObject.layerName] = listObjects;
             }
 
@@ -165,9 +151,7 @@ package starling.display
             var length:int = listObjects.length;
             var index:int = listObjects.indexOf(listObject);
             for (var i:int = index + 1; i < length; ++i)
-            {
                 listObjects[i - 1] = listObjects[i];
-            }
             --listObjects.length;
             if (listObjects.length == 0)
             {

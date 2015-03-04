@@ -36,20 +36,14 @@ package starling.display
                 if (listObject == null)
                 {
                     if (LIST_OBJECT_POOL.length == 0)
-                    {
                         listObject = new ListObject();
-                    }
                     else
-                    {
                         listObject = LIST_OBJECT_POOL.pop();
-                    }
                     listObject.layerName = layerName;
                     listObject.layeredObject = this;
                     _listObjects.push(listObject);
                     if (_container != null)
-                    {
                         _container.addListObject(listObject);
-                    }
                 }
 
                 listObject.list.push(displayObject);
@@ -75,9 +69,7 @@ package starling.display
                 length = _layeredDisplayObjects.length;
                 index = _layeredDisplayObjects.indexOf(displayObject);
                 for (i = index + 1; i < length; ++i)
-                {
                     _layeredDisplayObjects[i - 1] = _layeredDisplayObjects[i];
-                }
                 --_layeredDisplayObjects.length;
 
                 var list:Vector.<DisplayObject> = listObject.list;
@@ -86,18 +78,14 @@ package starling.display
                 length = list.length;
                 index = list.indexOf(displayObject);
                 for (i = index + 1; i < length; ++i)
-                {
                     list[i - 1] = list[i];
-                }
                 --list.length;
 
                 // Return to pool if necessary.
                 if (list.length == 0)
                 {
                     if (_container != null)
-                    {
                         _container.removeListObject(listObject);
-                    }
                     listObject.layerName = null;
                     listObject.layeredObject = null;
                     LIST_OBJECT_POOL.push(listObject);
@@ -131,13 +119,9 @@ package starling.display
             for each (var listObject:ListObject in _listObjects)
             {
                 if (_container != null)
-                {
                     _container.removeListObject(listObject);
-                }
                 if (container != null)
-                {
                     container.addListObject(listObject);
-                }
             }
             _container = container;
 
