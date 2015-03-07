@@ -17,6 +17,7 @@ package starling.display
         private const _listObjectByName:Dictionary = new Dictionary();
         private const _listObjectByDisplayObject:Dictionary = new Dictionary();
         private const _layeredDisplayObjects:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+        private const _nestedLayeredObjects:Vector.<LayeredObject> = new <LayeredObject>[];
 
         private var _container:LayeredContainer;
 
@@ -28,7 +29,7 @@ package starling.display
         /**
          * Add DisplayObject and link it to layer.
          */
-        public function addChildToLayer(displayObject:DisplayObject, layerName:String):void
+        public function addChildToLayer(displayObject:DisplayObject, layerName:String):DisplayObject
         {
             if (displayObject.parent != this)
             {
@@ -50,7 +51,23 @@ package starling.display
                 _listObjectByDisplayObject[displayObject] = listObject;
                 _layeredDisplayObjects.push(displayObject);
             }
-            addChild(displayObject);
+            return addChild(displayObject);
+        }
+
+        override public function addChildAt(child:DisplayObject, index:int):DisplayObject
+        {
+            var displayObject:DisplayObject = super.addChildAt(child, index);
+            var layeredObject:LayeredObject = displayObject as LayeredObject;
+            if (layeredObject != null)
+            {
+                index = _nestedLayeredObjects.indexOf(layeredObject);
+                if (index == -1)
+                {
+                    _nestedLayeredObjects[_nestedLayeredObjects.length] = layeredObject;
+                    layeredObject.setContainer(_container);
+                }
+            }
+            return displayObject;
         }
 
         override public function removeChildAt(index:int, dispose:Boolean = false):DisplayObject
@@ -96,6 +113,19 @@ package starling.display
                 }
             }
 
+            var layeredObject:LayeredObject = displayObject as LayeredObject;
+            if (layeredObject != null)
+            {
+                index = _nestedLayeredObjects.indexOf(layeredObject);
+                if (index != -1)
+                {
+                    length = _nestedLayeredObjects.length - 1;
+                    _nestedLayeredObjects[index] = _nestedLayeredObjects[length];
+                    _nestedLayeredObjects.length = length;
+                    layeredObject.setContainer(null);
+                }
+            }
+
             return displayObject;
         }
 
@@ -115,22 +145,42 @@ package starling.display
 
         override internal function setParent(value:DisplayObjectContainer):void
         {
-            var container:LayeredContainer = value as LayeredContainer;
+            setContainer(value as LayeredContainer);
+            super.setParent(value);
+        }
+
+        [Inline]
+        private final function setContainer(value:LayeredContainer = null):void
+        {
             for each (var listObject:ListObject in _listObjects)
             {
                 if (_container != null)
                     _container.removeListObject(listObject);
-                if (container != null)
-                    container.addListObject(listObject);
+                if (value != null)
+                    value.addListObject(listObject);
             }
-            _container = container;
-
-            super.setParent(value);
+            for each (var layeredObject:LayeredObject in _nestedLayeredObjects)
+                layeredObject.setContainer(value);
+            _container = value;
         }
 
-        internal function getListObject(layerName:String):ListObject
+        [Inline]
+        internal final function getListObject(layerName:String):ListObject
         {
             return _listObjectByName[layerName];
+        }
+
+        [Inline]
+        internal final function getAlphaBeforeContainer():Number
+        {
+            var result:Number = 1.0;
+            var parent:DisplayObject = this.parent;
+            while (parent != _container && parent != null)
+            {
+                result *= parent.alpha;
+                parent = parent.parent;
+            }
+            return result;
         }
     }
 }

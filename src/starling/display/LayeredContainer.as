@@ -1,5 +1,6 @@
 package starling.display
 {
+    import flash.geom.Matrix;
     import flash.utils.Dictionary;
 
     import starling.core.RenderSupport;
@@ -15,6 +16,7 @@ package starling.display
     public class LayeredContainer extends DisplayObjectContainer
     {
         private static const LIST_OBJECTS_POOL:Vector.<Vector.<ListObject>> = new Vector.<Vector.<ListObject>>();
+        private static const HELPER_MATRIX:Matrix = new Matrix();
 
         private const _layers:Vector.<String> = new Vector.<String>();
         private const _listObjectsByName:Dictionary = new Dictionary();
@@ -103,13 +105,14 @@ package starling.display
                     {
                         var filter:FragmentFilter = layeredObject.filter;
                         support.pushMatrix();
-                        support.transformMatrix(layeredObject);
+                        support.prependMatrix(layeredObject.getTransformationMatrix(this, HELPER_MATRIX));
                         support.blendMode = layeredObject.blendMode;
 
+                        var validAlpha:Number = alpha * layeredObject.getAlphaBeforeContainer();
                         if (filter != null)
-                            filter.render(listObject, support, alpha);
+                            filter.render(listObject, support, validAlpha);
                         else
-                            listObject.render(support, alpha);
+                            listObject.render(support, validAlpha);
 
                         support.blendMode = blendMode;
                         support.popMatrix();
