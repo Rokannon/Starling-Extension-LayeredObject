@@ -9,7 +9,7 @@ package starling.display
      *
      * @author Vladimir Atamanov
      */
-    public class LayeredObject extends DisplayObjectContainer
+    public class LayeredObject extends Sprite
     {
         private static const LIST_OBJECT_POOL:Vector.<ListObject> = new Vector.<ListObject>();
 

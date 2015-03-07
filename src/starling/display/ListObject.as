@@ -1,5 +1,7 @@
 package starling.display
 {
+    import flash.geom.Rectangle;
+
     import starling.core.RenderSupport;
     import starling.filters.FragmentFilter;
 
@@ -13,6 +15,8 @@ package starling.display
      */
     internal class ListObject extends DisplayObject
     {
+        private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
+
         public const list:Vector.<DisplayObject> = new Vector.<DisplayObject>();
 
         public var layerName:String;
@@ -25,6 +29,16 @@ package starling.display
 
         override public function render(support:RenderSupport, parentAlpha:Number):void
         {
+            if (layeredObject.clipRect != null)
+            {
+                var clipRect:Rectangle = support.pushClipRect(layeredObject.getClipRect(layeredObject.stage, HELPER_RECTANGLE));
+                if (clipRect.isEmpty())
+                {
+                    support.popClipRect();
+                    return;
+                }
+            }
+
             var alpha:Number = parentAlpha * layeredObject.alpha;
             var blendMode:String = support.blendMode;
 
@@ -48,6 +62,9 @@ package starling.display
                     support.popMatrix();
                 }
             }
+
+            if (layeredObject.clipRect != null)
+                support.popClipRect();
         }
     }
 }
