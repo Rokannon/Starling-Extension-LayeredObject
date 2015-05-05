@@ -11,12 +11,12 @@ package starling.display
      */
     public class LayeredObject extends Sprite
     {
-        private static const LIST_OBJECT_POOL:Vector.<ListObject> = new Vector.<ListObject>();
+        private static const LIST_OBJECT_POOL:Vector.<ListObject> = new <ListObject>[];
 
-        private const _listObjects:Vector.<ListObject> = new Vector.<ListObject>();
+        private const _listObjects:Vector.<ListObject> = new <ListObject>[];
         private const _listObjectByName:Dictionary = new Dictionary();
         private const _listObjectByDisplayObject:Dictionary = new Dictionary();
-        private const _layeredDisplayObjects:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+        private const _layeredDisplayObjects:Vector.<DisplayObject> = new <DisplayObject>[];
         private const _nestedLayeredObjects:Vector.<LayeredObject> = new <LayeredObject>[];
 
         private var _container:LayeredContainer;
@@ -36,10 +36,7 @@ package starling.display
                 var listObject:ListObject = _listObjectByName[layerName];
                 if (listObject == null)
                 {
-                    if (LIST_OBJECT_POOL.length == 0)
-                        listObject = new ListObject();
-                    else
-                        listObject = LIST_OBJECT_POOL.pop();
+                    listObject = LIST_OBJECT_POOL.pop() || new ListObject();
                     listObject.layerName = layerName;
                     listObject.layeredObject = this;
                     _listObjects.push(listObject);

@@ -15,10 +15,10 @@ package starling.display
      */
     public class LayeredContainer extends DisplayObjectContainer
     {
-        private static const LIST_OBJECTS_POOL:Vector.<Vector.<ListObject>> = new Vector.<Vector.<ListObject>>();
+        private static const LIST_OBJECTS_POOL:Vector.<Vector.<ListObject>> = new <Vector.<ListObject>>[];
         private static const HELPER_MATRIX:Matrix = new Matrix();
 
-        private const _layers:Vector.<String> = new Vector.<String>();
+        private const _layers:Vector.<String> = new <String>[];
         private const _listObjectsByName:Dictionary = new Dictionary();
 
         public function LayeredContainer()
@@ -138,10 +138,7 @@ package starling.display
             var listObjects:Vector.<ListObject> = _listObjectsByName[listObject.layerName];
             if (listObjects == null)
             {
-                if (LIST_OBJECTS_POOL.length == 0)
-                    listObjects = new Vector.<ListObject>();
-                else
-                    listObjects = LIST_OBJECTS_POOL.pop();
+                listObjects = LIST_OBJECTS_POOL.pop() || new <ListObject>[];
                 _listObjectsByName[listObject.layerName] = listObjects;
             }
 

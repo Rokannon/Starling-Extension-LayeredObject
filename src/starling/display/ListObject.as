@@ -17,7 +17,7 @@ package starling.display
     {
         private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
 
-        public const list:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+        public const list:Vector.<DisplayObject> = new <DisplayObject>[];
 
         public var layerName:String;
         public var layeredObject:LayeredObject;
