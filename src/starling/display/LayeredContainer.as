@@ -34,19 +34,19 @@ package starling.display
         public function createLayer(layerName:String):void
         {
             var index:int = _layers.indexOf(layerName);
-            if (index == -1)
+            if (index != -1)
+                return;
+
+            _layers.push(layerName);
+            var numChildren:int = this.numChildren;
+            for (var i:int = 0; i < numChildren; ++i)
             {
-                _layers.push(layerName);
-                var numChildren:int = this.numChildren;
-                for (var i:int = 0; i < numChildren; ++i)
+                var layeredObject:LayeredObject = getChildAt(i) as LayeredObject;
+                if (layeredObject != null)
                 {
-                    var layeredObject:LayeredObject = getChildAt(i) as LayeredObject;
-                    if (layeredObject != null)
-                    {
-                        var listObject:ListObject = layeredObject.getListObject(layerName);
-                        if (listObject != null)
-                            addListObject(listObject);
-                    }
+                    var listObject:ListObject = layeredObject.getListObject(layerName);
+                    if (listObject != null)
+                        addListObject(listObject);
                 }
             }
         }
@@ -58,21 +58,21 @@ package starling.display
         public function deleteLayer(layerName:String):void
         {
             var index:int = _layers.indexOf(layerName);
-            if (index != -1)
-            {
-                var listObjects:Vector.<ListObject> = _listObjectsByName[layerName];
-                if (listObjects != null)
-                {
-                    listObjects.length = 0;
-                    LIST_OBJECTS_POOL.push(listObjects);
-                    delete _listObjectsByName[layerName];
-                }
+            if (index == -1)
+                return;
 
-                var length:int = _layers.length;
-                for (var i:int = index + 1; i < length; ++i)
-                    _layers[i - 1] = _layers[i];
-                --_layers.length;
+            var listObjects:Vector.<ListObject> = _listObjectsByName[layerName];
+            if (listObjects != null)
+            {
+                listObjects.length = 0;
+                LIST_OBJECTS_POOL.push(listObjects);
+                delete _listObjectsByName[layerName];
             }
+
+            var length:int = _layers.length;
+            for (var i:int = index + 1; i < length; ++i)
+                _layers[i - 1] = _layers[i];
+            --_layers.length;
         }
 
         /**
