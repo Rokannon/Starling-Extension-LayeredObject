@@ -124,10 +124,10 @@ package starling.display
         override public function dispose():void
         {
             super.dispose();
-
             for (var layerName:String in _listObjectsByName)
             {
                 var listObjects:Vector.<ListObject> = _listObjectsByName[layerName];
+                delete _listObjectsByName[layerName];
                 listObjects.length = 0;
                 LIST_OBJECTS_POOL.push(listObjects);
             }
@@ -141,7 +141,6 @@ package starling.display
                 listObjects = LIST_OBJECTS_POOL.pop() || new <ListObject>[];
                 _listObjectsByName[listObject.layerName] = listObjects;
             }
-
             listObjects.push(listObject);
         }
 

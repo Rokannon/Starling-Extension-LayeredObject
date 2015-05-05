@@ -18,7 +18,6 @@ package starling.display
         private const _listObjectByDisplayObject:Dictionary = new Dictionary();
         private const _layeredDisplayObjects:Vector.<DisplayObject> = new <DisplayObject>[];
         private const _nestedLayeredObjects:Vector.<LayeredObject> = new <LayeredObject>[];
-
         private var _container:LayeredContainer;
 
         public function LayeredObject()
@@ -131,16 +130,20 @@ package starling.display
         override public function dispose():void
         {
             super.dispose();
-
-            while (_listObjects.length != 0)
+            for (var layerName:String in _listObjectByName)
             {
-                var listObject:ListObject = _listObjects.pop();
-                delete _listObjectByName[listObject.layerName];
+                var listObject:ListObject = _listObjectByName[layerName];
+                delete _listObjectByName[layerName];
                 listObject.layerName = null;
                 listObject.layeredObject = null;
                 listObject.list.length = 0;
                 LIST_OBJECT_POOL.push(listObject);
             }
+            _listObjects.length = 0;
+            for (var displayObject:DisplayObject in _listObjectByDisplayObject)
+                delete _listObjectByDisplayObject[displayObject];
+            _layeredDisplayObjects.length = 0;
+            _nestedLayeredObjects.length = 0;
         }
 
         override internal function setParent(value:DisplayObjectContainer):void
