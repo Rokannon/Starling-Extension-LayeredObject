@@ -40,6 +40,7 @@ package starling.display
                     listObject.layerName = layerName;
                     listObject.layeredObject = this;
                     _listObjects.push(listObject);
+                    _listObjectByName[layerName] = listObject;
                     if (_container != null)
                         _container.addListObject(listObject);
                 }
@@ -100,6 +101,7 @@ package starling.display
                 {
                     if (_container != null)
                         _container.removeListObject(listObject);
+                    delete _listObjectByName[listObject.layerName];
                     listObject.layerName = null;
                     listObject.layeredObject = null;
                     LIST_OBJECT_POOL.push(listObject);
@@ -133,6 +135,7 @@ package starling.display
             while (_listObjects.length != 0)
             {
                 var listObject:ListObject = _listObjects.pop();
+                delete _listObjectByName[listObject.layerName];
                 listObject.layerName = null;
                 listObject.layeredObject = null;
                 listObject.list.length = 0;
