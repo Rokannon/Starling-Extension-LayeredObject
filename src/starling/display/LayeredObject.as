@@ -11,7 +11,7 @@ package starling.display
      */
     public class LayeredObject extends Sprite
     {
-        private static const LIST_OBJECT_POOL:Vector.<ListObject> = new <ListObject>[];
+        private static const listObjectPool:Vector.<ListObject> = new <ListObject>[];
 
         private const _listObjects:Vector.<ListObject> = new <ListObject>[];
         private const _listObjectByName:Dictionary = new Dictionary();
@@ -35,7 +35,7 @@ package starling.display
                 var listObject:ListObject = _listObjectByName[layerName];
                 if (listObject == null)
                 {
-                    listObject = LIST_OBJECT_POOL.pop() || new ListObject();
+                    listObject = listObjectPool.pop() || new ListObject();
                     listObject.layerName = layerName;
                     listObject.layeredObject = this;
                     _listObjects.push(listObject);
@@ -103,7 +103,7 @@ package starling.display
                     delete _listObjectByName[listObject.layerName];
                     listObject.layerName = null;
                     listObject.layeredObject = null;
-                    LIST_OBJECT_POOL.push(listObject);
+                    listObjectPool.push(listObject);
                     length = _listObjects.length - 1;
                     index = _listObjects.indexOf(listObject);
                     _listObjects[index] = _listObjects[length];
@@ -137,7 +137,7 @@ package starling.display
                 listObject.layerName = null;
                 listObject.layeredObject = null;
                 listObject.list.length = 0;
-                LIST_OBJECT_POOL.push(listObject);
+                listObjectPool.push(listObject);
             }
             _listObjects.length = 0;
             for (var displayObject:DisplayObject in _listObjectByDisplayObject)

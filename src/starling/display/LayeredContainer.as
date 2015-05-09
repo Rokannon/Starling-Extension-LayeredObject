@@ -15,8 +15,8 @@ package starling.display
      */
     public class LayeredContainer extends DisplayObjectContainer
     {
-        private static const LIST_OBJECTS_POOL:Vector.<Vector.<ListObject>> = new <Vector.<ListObject>>[];
-        private static const HELPER_MATRIX:Matrix = new Matrix();
+        private static const listObjectsPool:Vector.<Vector.<ListObject>> = new <Vector.<ListObject>>[];
+        private static const helperMatrix:Matrix = new Matrix();
 
         private const _layers:Vector.<String> = new <String>[];
         private const _listObjectsByName:Dictionary = new Dictionary();
@@ -65,7 +65,7 @@ package starling.display
             if (listObjects != null)
             {
                 listObjects.length = 0;
-                LIST_OBJECTS_POOL.push(listObjects);
+                listObjectsPool.push(listObjects);
                 delete _listObjectsByName[layerName];
             }
 
@@ -105,7 +105,7 @@ package starling.display
                     {
                         var filter:FragmentFilter = layeredObject.filter;
                         support.pushMatrix();
-                        support.prependMatrix(layeredObject.getTransformationMatrix(this, HELPER_MATRIX));
+                        support.prependMatrix(layeredObject.getTransformationMatrix(this, helperMatrix));
                         support.blendMode = layeredObject.blendMode;
 
                         var validAlpha:Number = alpha * layeredObject.getAlphaBeforeContainer();
@@ -129,7 +129,7 @@ package starling.display
                 var listObjects:Vector.<ListObject> = _listObjectsByName[layerName];
                 delete _listObjectsByName[layerName];
                 listObjects.length = 0;
-                LIST_OBJECTS_POOL.push(listObjects);
+                listObjectsPool.push(listObjects);
             }
         }
 
@@ -138,7 +138,7 @@ package starling.display
             var listObjects:Vector.<ListObject> = _listObjectsByName[listObject.layerName];
             if (listObjects == null)
             {
-                listObjects = LIST_OBJECTS_POOL.pop() || new <ListObject>[];
+                listObjects = listObjectsPool.pop() || new <ListObject>[];
                 _listObjectsByName[listObject.layerName] = listObjects;
             }
             listObjects.push(listObject);
@@ -154,7 +154,7 @@ package starling.display
             --listObjects.length;
             if (listObjects.length == 0)
             {
-                LIST_OBJECTS_POOL.push(listObjects);
+                listObjectsPool.push(listObjects);
                 delete _listObjectsByName[listObject.layerName];
             }
         }

@@ -15,7 +15,7 @@ package starling.display
      */
     internal class ListObject extends DisplayObject
     {
-        private static const HELPER_RECTANGLE:Rectangle = new Rectangle();
+        private static const helperRectangle:Rectangle = new Rectangle();
 
         public const list:Vector.<DisplayObject> = new <DisplayObject>[];
         public var layerName:String;
@@ -30,7 +30,8 @@ package starling.display
         {
             if (layeredObject.clipRect != null)
             {
-                var clipRect:Rectangle = support.pushClipRect(layeredObject.getClipRect(layeredObject.stage, HELPER_RECTANGLE));
+                var clipRect:Rectangle = support.pushClipRect(layeredObject.getClipRect(layeredObject.stage,
+                    helperRectangle));
                 if (clipRect.isEmpty())
                 {
                     support.popClipRect();
