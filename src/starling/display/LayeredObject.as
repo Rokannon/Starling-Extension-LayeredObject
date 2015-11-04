@@ -153,7 +153,7 @@ package starling.display
         }
 
         [Inline]
-        private final function setContainer(value:LayeredContainer = null):void
+        private final function setContainer(value:LayeredContainer):void
         {
             for each (var listObject:ListObject in _listObjects)
             {
